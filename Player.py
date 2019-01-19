@@ -1,10 +1,23 @@
 class player():
     #some variables
+    
+    #vars for drawing
     x = None
     y = None
     ang = None
     
-    
+    #stats
+    hpmax = None
+    hpcurrent = None
+    speed = None
+
+    #equipment
+    weapon = None
+    qslot1 = None
+    qslot2 = None
+    inventory = []
+
+
     #movement
     def moveup():
         pass
@@ -14,7 +27,8 @@ class player():
         pass
     def moveright():
         pass
-    
+
+
     #attacking enemies
     def aim():
         pass
@@ -22,7 +36,8 @@ class player():
         pass
     def useitem():
         pass
-    
+
+
     #some interactive things
     def pickweapon():
         pass
