@@ -2,7 +2,12 @@ import tkinter
 from tkinter import messagebox
 from tkinter import *
 from random import *
+
+#importing some mechanics
 from Player import *
+from Enemy import *
+from Tile import *
+from Weapon import *
 
 height_f, width_f, cellsize = [16, 12, 64]
 

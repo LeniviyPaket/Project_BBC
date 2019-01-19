@@ -29,6 +29,17 @@ class player():
         pass
 
 
+    #dodging
+    def dodgeup():
+        pass
+    def dodgedown():
+        pass
+    def dodgeright():
+        pass
+    def dodgeleft():
+        pass
+
+
     #attacking enemies
     def aim():
         pass
