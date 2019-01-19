@@ -22,21 +22,9 @@ with open("polygon.txt", "r") as f:
 
 
 root = tkinter.Tk()
-#canvas = Canvas(root, width = cellsize * height_f, height = cellsize * width_f)
+#canvas = tkinter.Canvas(root, width = cellsize * height_f, height = cellsize * width_f)
 
-#root.columnconfigure(0, pad = cellsize)
-#root.columnconfigure(1, pad = cellsize)
-#root.columnconfigure(2, pad = cellsize)
-#root.columnconfigure(3, pad = cellsize)
-#root.columnconfigure(4, pad = cellsize)
-
-#root.rowconfigure(0, pad = cellsize)
-#root.rowconfigure(1, pad = cellsize)
-#root.rowconfigure(2, pad = cellsize)
-#root.rowconfigure(3, pad = cellsize)
-#root.rowconfigure(4, pad = cellsize)
-
-print(*field)
+#print(*field)
 
 imgwall = ImageTk.PhotoImage(Image.open('/home/svs/Desktop/Gamehack_2019/sprites/floor_3.png'))
 imgfloor = ImageTk.PhotoImage(Image.open('/home/svs/Desktop/Gamehack_2019/sprites/g_floor_base.png'))
@@ -52,5 +40,4 @@ for j in range(height_f):
 
 ##здесь скоро будут бинды
 
-#canvas.pack()
 root.mainloop()

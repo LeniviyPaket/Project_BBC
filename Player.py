@@ -20,13 +20,13 @@ class player():
 
     #movement
     def moveup():
-        pass
+        y += speed
     def movedown():
-        pass
+        y -= speed
     def moveleft():
-        pass
+        x -= speed
     def moveright():
-        pass
+        x += speed
 
 
     #dodging
@@ -37,6 +37,8 @@ class player():
     def dodgeright():
         pass
     def dodgeleft():
+        pass
+    def randomdodge():
         pass
 
 
