@@ -22,8 +22,6 @@ with open("polygon.txt", "r") as f:
 
 
 root = tkinter.Tk()
-#canvas = tkinter.Canvas(root, width = cellsize * height_f, height = cellsize * width_f)
-
 #print(*field)
 
 imgwall = ImageTk.PhotoImage(Image.open('/home/svs/Desktop/Gamehack_2019/sprites/floor_3.png'))
@@ -39,5 +37,6 @@ for j in range(height_f):
 #canvas.create_rectangle(0, 0, cellsize * height_f, cellsize * width_f, fill = 'red')
 
 ##здесь скоро будут бинды
+##а сейчас здесь только танцы с бубном
 
 root.mainloop()
