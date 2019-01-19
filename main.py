@@ -13,33 +13,44 @@ from Weapon import *
 
 height_f, width_f, cellsize = [16, 12, 64]
 
+#height_f, width_f, cellsize = [3, 3, 64]
 
 field = []
 with open("polygon.txt", "r") as f:
     for line in f:
-        field.append(list(line))
+        field.append(list(line.strip()))
 
 
 root = tkinter.Tk()
-canvas = tkinter.Canvas(root, width = cellsize * height_f, height = cellsize * width_f)
+#canvas = Canvas(root, width = cellsize * height_f, height = cellsize * width_f)
 
-for i in range(width_f):
-    for j in range(height_f):
+#root.columnconfigure(0, pad = cellsize)
+#root.columnconfigure(1, pad = cellsize)
+#root.columnconfigure(2, pad = cellsize)
+#root.columnconfigure(3, pad = cellsize)
+#root.columnconfigure(4, pad = cellsize)
+
+#root.rowconfigure(0, pad = cellsize)
+#root.rowconfigure(1, pad = cellsize)
+#root.rowconfigure(2, pad = cellsize)
+#root.rowconfigure(3, pad = cellsize)
+#root.rowconfigure(4, pad = cellsize)
+
+print(*field)
+
+imgwall = ImageTk.PhotoImage(Image.open('/home/svs/Desktop/Gamehack_2019/sprites/floor_3.png'))
+imgfloor = ImageTk.PhotoImage(Image.open('/home/svs/Desktop/Gamehack_2019/sprites/g_floor_base.png'))
+
+for j in range(height_f):
+    for i in range(width_f):
         if field[i][j] == '#':
-            img = ImageTk.PhotoImage(Image.open(os.getcwd() + '/sprites/g_wall_base.png'))
-            tkinter.Label(root, image=img).pack()
-        else:
-            img = ImageTk.PhotoImage(Image.open(os.getcwd() + '/sprites/g_floor_base.png'))
-            tkinter.Label(root, image=img).pack()
-            
+            tkinter.Label(root, image=imgwall).grid(column = j, row = i)
+        elif field[i][j] == '.':
+            tkinter.Label(root, image=imgfloor).grid(column = j, row = i)
 
 #canvas.create_rectangle(0, 0, cellsize * height_f, cellsize * width_f, fill = 'red')
 
 ##здесь скоро будут бинды
 
-#img = ImageTk.PhotoImage(Image.open(os.getcwd() + '/sprites/hl_weapon.png'))
-#view = tkinter.Label(root, padx = 100, pady = 100, image=img)
-#view.pack()
-#view.pack(side="center", fill="both", expand="yes")
-canvas.pack()
+#canvas.pack()
 root.mainloop()
