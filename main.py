@@ -15,9 +15,9 @@ import Weapon
 from entity import *
 
 main_field = Main_field()
-main_field.add_entity('player')
-main_field.add_entity('enemy')
-main_field.get_list_ent()
+
+#создаем "список живых существ"
+entities_alive = {}
 
 height_f, width_f, cellsize = [16, 12, 64]
 dodge_dist = cellsize
@@ -31,14 +31,20 @@ with open("polygon.txt", "r") as f:
         field.append(list(line.strip()))
 
 
+entities_to_obj = {}
+
 
 #а тут задаем параметры ГГ (кодовое имя --- Курточка)
+main_field.add_entity('player',entity_id='player',entity_pos = [cellsize*4,cellsize*4])
+entities_alive['player'] = "player"
 Jacket = Player.player()
-Jacket.x, Jacket.y = height_f * cellsize // 2, width_f * cellsize // 2
+Jacket.x, Jacket.y = main_field.get_list_ent()[0][1][0] + cellsize, main_field.get_list_ent()[0][1][1] + cellsize
 Jacket.speed = main_field.get_list_ent()[0][0].max_move_speed
 Jacket.sprite = os.getcwd() + '/sprites/enemy_0_1.png'
 
 #задаем манекен
+main_field.add_entity('enemy',entity_id='enemy_1')
+entities_alive['enemy_1'] = "enemy_1"
 Man = Player.player()
 Man.x, Man.y = main_field.get_list_ent()[1][1][0] + cellsize, main_field.get_list_ent()[1][1][1] + cellsize
 Man.speed = main_field.get_list_ent()[0][0].max_move_speed
@@ -63,11 +69,14 @@ for j in range(height_f):
         elif field[i][j] == '.':
             canvas.create_image(j * cellsize, i * cellsize, anchor = "nw", image=imgfloor)
 
+
 #создаем тело персонажа
 charbody = canvas.create_image(Jacket.x, Jacket.y, image=Jacketsprite)
+entities_to_obj['player'] = charbody
 
 #создаем манекен
 manbody = canvas.create_image(Man.x, Man.y, image=Mansprite)
+entities_to_obj['enemy_1'] = manbody
 
 
 ##здесь скоро будут бинды

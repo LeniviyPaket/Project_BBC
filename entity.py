@@ -14,7 +14,8 @@ class entity(object):
 
 
 class Player_c():
-    def __init__(self,weapon=1,max_helth=10,max_move_speed=32,atack_range=64,hit_box_range=5):
+    def __init__(self,weapon=1,max_helth=10,max_move_speed=32,atack_range=64,hit_box_range=5,enemy_id=None):
+        self.enemy_id = enemy_id
         self.weapon = weapon
         self.curent_helth = max_helth
         self.max_move_speed = max_move_speed
@@ -26,7 +27,7 @@ class Player_c():
             return True
         return False
 class Enemy():
-    def __init__(self,weapon=1,max_helth=10,max_move_speed=32,atack_range=64,hit_box_range=5,enemy_id = None):
+    def __init__(self,weapon=1,max_helth=10,max_move_speed=32,atack_range=64,hit_box_range=5, enemy_id = None):
         self.enemy_id = enemy_id
         self.weapon = weapon
         self.curent_helth = max_helth
@@ -34,7 +35,6 @@ class Enemy():
         self.hit_box_range = hit_box_range
     def hited(self,damage=0):
         self.curent_helth -=damage
-        print(self.curent_helth)
         if self.curent_helth <= 0:
             return True
         return False
@@ -57,10 +57,10 @@ class Main_field(object):
         return self.entity_list
 
     #добавить entity на доску 
-    def add_entity(self,entity_type,entity_pos = None):
+    def add_entity(self,entity_type,entity_id=None,entity_pos = None):
         if entity_pos is None:
             entity_pos = [self.field_x//2,self.field_y//2]
-        self.entity_list.append((entity_dict[entity_type](),entity_pos))
+        self.entity_list.append((entity_dict[entity_type](enemy_id=entity_id),entity_pos))
 
 
 	#передвинуть entity на шаг в соответсвующем направлении
@@ -79,7 +79,6 @@ class Main_field(object):
         to_remove = []
         for enemy in self.entity_list:
             if enemy != entity:
-                print(calc_dist(enemy[1],entity[1]))
                 if (calc_dist(entity[1],enemy[1])<(entity[0].atack_range+enemy[0].hit_box_range)):
                     if enemy[0].hited(entity[0].weapon):
                         to_remove.append(enemy)
