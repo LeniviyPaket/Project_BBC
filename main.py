@@ -5,14 +5,20 @@ from PIL import Image
 from tkinter import messagebox
 from random import *
 
+
 #importing some mechanics
 import Player
 import Enemy
 import Tile
 import Weapon
+from entity import *
+
+main_field = Main_field()
+main_field.add_entity('player')
+main_field.get_list_ent()
 
 height_f, width_f, cellsize = [16, 12, 64]
-dodgedist = cellsize
+dodge_dist = cellsize
 
 #height_f, width_f, cellsize = [3, 3, 64]
 
@@ -22,10 +28,13 @@ with open("polygon.txt", "r") as f:
     for line in f:
         field.append(list(line.strip()))
 
+
+
 #а тут задаем параметры ГГ (кодовое имя --- Курточка)
 Jacket = Player.player()
 Jacket.x, Jacket.y = height_f * cellsize // 2, width_f * cellsize // 2
-Jacket.speed = cellsize // 2
+print(dir(Player_c))
+Jacket.speed = main_field.get_list_ent()[0][0].max_move_speed
 Jacket.sprite = os.getcwd() + '/sprites/enemy_0_1.png'
 
 
@@ -66,24 +75,28 @@ charbody = canvas.create_image(Jacket.x, Jacket.y, image=Jacketsprite)
 
 def char_move_left(x):
     global charbody
+    main_field.move_left(0)
     #Jacket.move_up()
     canvas.move(charbody, -1 * x, 0)
     canvas.update()
 
 def char_move_down(x):
     global charbody
+    main_field.move_down(0)
     #Jacket.move_up()
     canvas.move(charbody, 0, x)
     canvas.update()
 
 def char_move_right(x):
     global charbody
+    main_field.move_right(0)
     #Jacket.move_up()
     canvas.move(charbody, x, 0)
     canvas.update()
 
 def char_move_up(x):
     global charbody
+    main_field.move_up(0)
     #Jacket.move_up()
     canvas.move(charbody, 0, -1 * x)
     canvas.update()

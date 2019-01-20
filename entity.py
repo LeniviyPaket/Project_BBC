@@ -1,8 +1,8 @@
 class entity(object):
-    def __init__(weapon=1,max_helth=10,max_move_spead=32,atack_range=64,hit_box_range=5):
+    def __init__(self,weapon=1,max_helth=10,max_move_speed=32,atack_range=64,hit_box_range=5):
         self.weapon = weapon
         self.curent_helth = max_helth
-        self.max_move_spead = max_move_spead
+        self.max_move_speed = max_move_speed
         self.hit_box_range = hit_box_range
     def hited(self,damage=0):
         self.curent_helth -=damage
@@ -13,17 +13,25 @@ class entity(object):
 
 
 
-class Player(entity):
-    def __init__(self):
-        super().__init__()
+class Player_c():
+    def __init__(self,weapon=1,max_helth=10,max_move_speed=32,atack_range=64,hit_box_range=5):
+        self.weapon = weapon
+        self.curent_helth = max_helth
+        self.max_move_speed = max_move_speed
+        self.hit_box_range = hit_box_range
+    def hited(self,damage=0):
+        self.curent_helth -=damage
+        if self.curent_helth <= 0:
+            return True
+        return False
 class Enemy(entity):
-    def __init__)(self):
+    def __init__(self):
         super().__init__()
 
 
 entity_dict = {
-    'enemy'  : Enemy
-    'player' : Player
+    'enemy'  : Enemy,
+    'player' : Player_c
 }
 
 class Main_field(object):
@@ -39,19 +47,21 @@ class Main_field(object):
         return self.entity_list
 
     #добавить entity на доску 
-    def add_entity(self,entity_type,entity_pos = (field_x//2,field_y//2)):
-        self.entity_list.append(entity_dict(entity_type),entity_pos)
+    def add_entity(self,entity_type,entity_pos = None):
+        if entity_pos is None:
+            entity_pos = [self.field_x//2,self.field_y//2]
+        self.entity_list.append((entity_dict[entity_type](),entity_pos))
 
 
 	#передвинуть entity на шаг в соответсвующем направлении
-	def move_up(self,entity_id):
-        self.entity_list[entity_id][1][1] -= self.entity_list[entity_id][0].max_move_spead
+    def move_up(self,entity_id):
+        self.entity_list[entity_id][1][1] -= self.entity_list[entity_id][0].max_move_speed
     def move_down(self,entity_id):
-        self.entity_list[entity_id][1][1] += self.entity_list[entity_id][0].max_move_spead
+        self.entity_list[entity_id][1][1] += self.entity_list[entity_id][0].max_move_speed
     def move_left(self,entity_id):
-        self.entity_list[entity_id][1][0] -= self.entity_list[entity_id][0].max_move_spead
+        self.entity_list[entity_id][1][0] -= self.entity_list[entity_id][0].max_move_speed
     def move_right(self,entity_id):
-        self.entity_list[entity_id][1][0] += self.entity_list[entity_id][0].max_move_spead
+        self.entity_list[entity_id][1][0] += self.entity_list[entity_id][0].max_move_speed
 
 
     def atack_up(self,entity_id):
