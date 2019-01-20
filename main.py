@@ -98,7 +98,6 @@ def char_move_right(x):
     main_field.move_right(0)
     new_pos = main_field.get_list_ent()[0][1]
     #Jacket.move_up()
-    print(old_pos,new_pos)
     canvas.move(charbody, new_pos[0]-old_pos[0], new_pos[1]-old_pos[1])
     canvas.update()
 
