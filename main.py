@@ -34,7 +34,7 @@ canvas = tkinter.Canvas(root, width = cellsize * height_f, height = cellsize * w
 
 #создаем спрайты
 Jacketsprite = ImageTk.PhotoImage(Image.open(Jacket.sprite))
-imgwall = ImageTk.PhotoImage(Image.open(os.getcwd() + '/sprites/floor_3.png'))
+imgwall = ImageTk.PhotoImage(Image.open(os.getcwd() + '/sprites/wall1.png'))
 imgfloor = ImageTk.PhotoImage(Image.open(os.getcwd() + '/sprites/floor3.png'))
 
 
