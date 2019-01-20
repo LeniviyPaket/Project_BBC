@@ -18,6 +18,7 @@ from entity import *
 #подключаем музычку, но позже
 
 main_field = Main_field()
+count_of_moves = 0
 
 #создаем "список живых существ"
 entities_alive = {}
@@ -173,6 +174,9 @@ def char_attack():
 
 #тут отзываемся на нажатия клавиш
 def callback(event):
+    global count_of_moves
+    print(count_of_moves)
+    count_of_moves+=1
     if event.char == "w":
         char_move_up(Jacket.speed, 'player')
         time.sleep(0.0625)
