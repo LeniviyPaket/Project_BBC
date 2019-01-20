@@ -48,7 +48,19 @@ class Enemy():
         if self.curent_helth <= 0:
             return True
         return False
-
+    def move_to_player(self,player_pos,player_hit_box_range,self_pos):
+        base_dist = calc_dist(player_pos,self_pos)
+        if base_dist<player_hit_box_range+self.atack_range:
+            return "atack"
+        pos_moves = ['up','left','right','down']
+        if base_dist>calc_dist(player_pos,[self_pos[0],self_pos[1]-self.max_move_speed]):
+            return pos_moves[0]
+        if base_dist>calc_dist(player_pos,[self_pos[0]-self.max_move_speed,self_pos[1]]):
+            return pos_moves[1]
+        if base_dist>calc_dist(player_pos,[self_pos[0]+self.max_move_speed,self_pos[1]]):
+            return pos_moves[2]
+        if base_dist>calc_dist(player_pos,[self_pos[0],self_pos[1]+self.max_move_speed]):
+            return pos_moves[3]
 entity_dict = {
     'enemy'  : Enemy,
     'player' : Player_c
