@@ -41,7 +41,7 @@ entities_to_obj = {}
 main_field.add_entity('player',entity_id='player',entity_pos = [cellsize*4,cellsize*4])
 entities_alive['player'] = "player"
 Jacket = Player.player()
-Jacket.x, Jacket.y = main_field.get_list_ent()[0][1][0] + cellsize, main_field.get_list_ent()[0][1][1] + cellsize
+Jacket.x, Jacket.y = main_field.get_list_ent()[0][1][0] + cellsize * 3 // 2, main_field.get_list_ent()[0][1][1] + cellsize * 3 // 2
 Jacket.speed = main_field.get_list_ent()[0][0].max_move_speed
 Jacket.sprite = os.getcwd() + '/sprites/player.png'
 
@@ -49,9 +49,9 @@ Jacket.sprite = os.getcwd() + '/sprites/player.png'
 main_field.add_entity('enemy',entity_id='enemy_1')
 entities_alive['enemy_1'] = "enemy_1"
 Man = Player.player()
-Man.x, Man.y = main_field.get_list_ent()[1][1][0] + cellsize, main_field.get_list_ent()[1][1][1] + cellsize
+Man.x, Man.y = main_field.get_list_ent()[1][1][0] + cellsize * 3 // 2, main_field.get_list_ent()[1][1][1] + cellsize * 3 // 2
 Man.speed = main_field.get_list_ent()[0][0].max_move_speed
-Man.sprite = os.getcwd() + '/sprites/weapon.png'
+Man.sprite = os.getcwd() + '/sprites/enemy.png'
 
 #пилим окно
 root = tkinter.Tk()
@@ -95,40 +95,40 @@ entities_to_obj['enemy_1'] = canvas.create_image(Man.x, Man.y, image=Mansprite)
 #warning: из-за того, что я ниоч понимаю принцип работы ткинтера, все будет костыльно
 
 
-def char_move_left(x):
+def char_move_left(x, whom):
     global entities_to_obj
     old_pos = deepcopy(main_field.get_list_ent()[0][1])
     main_field.move_left(0)
     new_pos = main_field.get_list_ent()[0][1]
     #Jacket.move_up()
-    canvas.move(entities_to_obj['player'], new_pos[0]-old_pos[0], new_pos[1]-old_pos[1])
+    canvas.move(entities_to_obj[whom], new_pos[0]-old_pos[0], new_pos[1]-old_pos[1])
     canvas.update()
 
-def char_move_down(x):
+def char_move_down(x, whom):
     global entities_to_obj
     old_pos = deepcopy(main_field.get_list_ent()[0][1])
     main_field.move_down(0)
     new_pos = main_field.get_list_ent()[0][1]
     #Jacket.move_up()
-    canvas.move(entities_to_obj['player'], new_pos[0]-old_pos[0], new_pos[1]-old_pos[1])
+    canvas.move(entities_to_obj[whom], new_pos[0]-old_pos[0], new_pos[1]-old_pos[1])
     canvas.update()
 
-def char_move_right(x):
+def char_move_right(x, whom):
     global entities_to_obj
     old_pos = deepcopy(main_field.get_list_ent()[0][1])
     main_field.move_right(0)
     new_pos = main_field.get_list_ent()[0][1]
     #Jacket.move_up()
-    canvas.move(entities_to_obj['player'], new_pos[0]-old_pos[0], new_pos[1]-old_pos[1])
+    canvas.move(entities_to_obj[whom], new_pos[0]-old_pos[0], new_pos[1]-old_pos[1])
     canvas.update()
 
-def char_move_up(x):
+def char_move_up(x, whom):
     global entities_to_obj
     old_pos = deepcopy(main_field.get_list_ent()[0][1])
     main_field.move_up(0)
     new_pos = main_field.get_list_ent()[0][1]
     #Jacket.move_up()
-    canvas.move(entities_to_obj['player'], new_pos[0]-old_pos[0], new_pos[1]-old_pos[1])
+    canvas.move(entities_to_obj[whom], new_pos[0]-old_pos[0], new_pos[1]-old_pos[1])
     canvas.update()
 
 
@@ -137,18 +137,18 @@ def char_random_dodge():
     for _ in range(2):
         act = randint(0, 3)
         if act == 0:
-            char_move_up(dodge_dist)
+            char_move_up(dodge_dist, 'player')
         elif act == 1:
-            char_move_down(dodge_dist)
+            char_move_down(dodge_dist, 'player')
         elif act == 2:
-            char_move_left(dodge_dist)
+            char_move_left(dodge_dist, 'player')
         elif act == 3:
-            char_move_right(dodge_dist)
+            char_move_right(dodge_dist, 'player')
 
 
 #атака
 def char_attack():
-    old_pos = (main_field.get_list_ent()[0][1][0] + cellsize, main_field.get_list_ent()[0][1][1] + cellsize)
+    old_pos = (main_field.get_list_ent()[0][1][0] + cellsize * 3 // 2, main_field.get_list_ent()[0][1][1] + cellsize * 3 // 2)
     r = main_field.get_list_ent()[0][0].atack_range
     atck_gui = canvas.create_image(old_pos[0], old_pos[1], image=Attacksprite)
     char_copy = canvas.create_image(old_pos[0], old_pos[1], image=Jacketsprite)
@@ -168,16 +168,16 @@ def char_attack():
 #тут отзываемся на нажатия клавиш
 def callback(event):
     if event.char == "w":
-        char_move_up(Jacket.speed)
+        char_move_up(Jacket.speed, 'player')
         time.sleep(0.0625)
     if event.char == "a":
-        char_move_left(Jacket.speed)
+        char_move_left(Jacket.speed, 'player')
         time.sleep(0.0625)
     if event.char == "s":
-        char_move_down(Jacket.speed)
+        char_move_down(Jacket.speed, 'player')
         time.sleep(0.0625)
     if event.char == "d":
-        char_move_right(Jacket.speed)
+        char_move_right(Jacket.speed, 'player')
         time.sleep(0.0625)
     if event.char == "f":
         char_random_dodge()
