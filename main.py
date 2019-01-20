@@ -78,7 +78,7 @@ def create_enemy(pos = [1024//2,768//2]):
     global canvas
     global Mansprite
     enemy_name = 'enemy_'+str(len(main_field.get_list_ent()))
-    main_field.add_entity('enemy',entity_id=enemy_name,entity_pos=[randint(1,16)*cellsize,randint(1,12)*cellsize])
+    main_field.add_entity('enemy',entity_id=enemy_name,entity_pos=pos)
     entity_id_to_id[enemy_name] = 1
     Man = Player.player()
     Man.x, Man.y = main_field.get_list_ent()[len(main_field.get_list_ent())-1][1][0] + cellsize * 3 // 2, main_field.get_list_ent()[len(main_field.get_list_ent())-1][1][1] + cellsize * 3 // 2
@@ -163,7 +163,7 @@ def char_attack(whom):
     else:
         sprite = Mansprite
     char_copy = canvas.create_image(old_pos[0], old_pos[1], image=sprite)
-    died_list, kicked_list = main_field.atack(0)
+    died_list = main_field.atack(entity_id_to_id[whom])
     canvas.update()
     #print(died_list)
     time.sleep(0.125)
@@ -285,7 +285,7 @@ def callback(event):
                     char_attack(key)
     name = [' ','f','w','s','a','d']
     if event.char in name:
-        if count_of_moves//20 < (count_of_moves+1)//20:
+        if count_of_moves//10 < (count_of_moves+1)//10:
             create_enemy()
             count_of_moves+=1
         else:

@@ -13,13 +13,17 @@ class entity(object):
         return False
 
 
-class Weapon():
+class WeaponP():
+    def __init__(self,damage=5,atack_range=120):
+        self.damage=damage
+        self.atack_range = atack_range
+class WeaponE():
     def __init__(self,damage=1,atack_range=65):
         self.damage=damage
         self.atack_range = atack_range
 
 class Player_c():
-    def __init__(self,weapon=Weapon(),max_helth=10,max_move_speed=32,hit_box_range=32,enemy_id=None):
+    def __init__(self,weapon=WeaponP(),max_helth=10,max_move_speed=32,hit_box_range=32,enemy_id=None):
         self.enemy_id = enemy_id
         self.damage = weapon.damage
         self.curent_helth = max_helth
@@ -36,7 +40,7 @@ class Player_c():
         self.atack_range = weapon.atack_range
 
 class Enemy():
-    def __init__(self,weapon=Weapon(),max_helth=10,max_move_speed=32,hit_box_range=32, enemy_id = None):
+    def __init__(self,weapon=WeaponE(),max_helth=10,max_move_speed=32,hit_box_range=32, enemy_id = None):
         self.enemy_id = enemy_id
         self.damage = weapon.damage
         self.curent_helth = max_helth
@@ -134,9 +138,8 @@ class Main_field(object):
         for i in to_remove:
             self.entity_list.remove(i)
         a = [i[0].enemy_id for i in to_remove]
-        b = [i[0].enemy_id for i in kicked]
         #print(a)
-        return a, b
+        return a
 
 
 def calc_dist(pos_1,pos_2):
