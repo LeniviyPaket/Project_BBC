@@ -63,10 +63,16 @@ charbody = canvas.create_image(Jacket.x, Jacket.y, image=Jacketsprite)
 #а вот и бинды
 #warning: из-за того, что я ниоч понимаю принцип работы ткинтера, все будет костыльно
 
-canvas.bind("w", charmoveup)
-canvas.bind("a", charmoveleft)
-canvas.bind("s", charmovedown)
-canvas.bind("d", charmoveright)
+def charmoveup():
+    canvas.delete(charbody)
+    Jacket.moveup()
+    charbody = canvas.create_image(Jacket.x, Jacket.y, image=Jacketsprite)
+    canvas.update()
+
+canvas.bind("<Up>", charmoveup)
+#canvas.bind("a", charmoveleft)
+#canvas.bind("s", charmovedown)
+#canvas.bind("d", charmoveright)
 
 canvas.pack()
 root.mainloop()

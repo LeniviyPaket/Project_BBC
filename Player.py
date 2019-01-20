@@ -21,9 +21,9 @@ class player():
 
     #movement
     def moveup():
-        y += speed
-    def movedown():
         y -= speed
+    def movedown():
+        y += speed
     def moveleft():
         x -= speed
     def moveright():
