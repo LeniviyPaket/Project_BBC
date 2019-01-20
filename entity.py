@@ -71,42 +71,12 @@ class Main_field(object):
         self.entity_list[entity_id][1][0] = min(self.entity_list[entity_id][1][0] + self.entity_list[entity_id][0].max_move_speed,self.field_x)
 
 
-    def atack_up(self,entity_id):
+    def atack(self,entity_id):
         entity = self.entity_list[entity_id]
         to_remove = []
         for enemy in self.entity_list:
             if num != entity_id:
-                if (calc_dist(entity[1],enemy[1])<(entity[0].atack_range+enemy[0].hit_box_range)) and (enemy[1][0]>entity[1][0]):
-                    if enemy[0].hited(entity[0].weapon):
-                        to_remove.append(enemy)
-        for i in to_remove:
-            self.entity_list.remove(i)
-    def atack_down(self,entity_id):
-        entity = self.entity_list[entity_id]
-        to_remove = []
-        for enemy in self.entity_list:
-            if num != entity_id:
-                if (calc_dist(entity[1],enemy[1])<(entity[0].atack_range+enemy[0].hit_box_range)) and (enemy[1][0]<entity[1][0]):
-                    if enemy[0].hited(entity[0].weapon):
-                        to_remove.append(enemy)
-        for i in to_remove:
-            self.entity_list.remove(i)
-    def atack_left(self,entity_id):
-        entity = self.entity_list[entity_id]
-        to_remove = []
-        for enemy in self.entity_list:
-            if num != entity_id:
-                if (calc_dist(entity[1],enemy[1])<(entity[0].atack_range+enemy[0].hit_box_range)) and (enemy[1][1]<entity[1][1]):
-                    if enemy[0].hited(entity[0].weapon):
-                        to_remove.append(enemy)
-        for i in to_remove:
-            self.entity_list.remove(i)
-    def atack_right(self,entity_id):
-        entity = self.entity_list[entity_id]
-        to_remove = []
-        for enemy in self.entity_list:
-            if num != entity_id:
-                if (calc_dist(entity[1],enemy[1])<(entity[0].atack_range+enemy[0].hit_box_range)) and (enemy[1][1]>entity[1][1]):
+                if (calc_dist(entity[1],enemy[1])<(entity[0].atack_range+enemy[0].hit_box_range)):
                     if enemy[0].hited(entity[0].weapon):
                         to_remove.append(enemy)
         for i in to_remove:
