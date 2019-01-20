@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 class entity(object):
     def __init__(self,weapon=1,max_helth=10,max_move_speed=32,atack_range=64,hit_box_range=5):
         self.weapon = weapon
@@ -14,7 +16,7 @@ class entity(object):
 
 
 class Player_c():
-    def __init__(self,weapon=1,max_helth=10,max_move_speed=32,atack_range=64,hit_box_range=5,enemy_id=None):
+    def __init__(self,weapon=1,max_helth=10,max_move_speed=32,atack_range=65,hit_box_range=32,enemy_id=None):
         self.enemy_id = enemy_id
         self.weapon = weapon
         self.curent_helth = max_helth
@@ -27,7 +29,7 @@ class Player_c():
             return True
         return False
 class Enemy():
-    def __init__(self,weapon=1,max_helth=10,max_move_speed=32,atack_range=64,hit_box_range=5, enemy_id = None):
+    def __init__(self,weapon=1,max_helth=10,max_move_speed=32,atack_range=65,hit_box_range=32, enemy_id = None):
         self.enemy_id = enemy_id
         self.weapon = weapon
         self.curent_helth = max_helth
@@ -65,13 +67,42 @@ class Main_field(object):
 
 	#передвинуть entity на шаг в соответсвующем направлении
     def move_up(self,entity_id):
+        old_pos = deepcopy(self.entity_list[entity_id][1])
         self.entity_list[entity_id][1][1] = max(self.entity_list[entity_id][1][1] - self.entity_list[entity_id][0].max_move_speed,0)
+        entity = self.entity_list[entity_id]
+        for enemy in self.entity_list:
+            if enemy != entity:
+                print(calc_dist(entity[1],enemy[1]))
+                if (calc_dist(entity[1],enemy[1])<(entity[0].hit_box_range+enemy[0].hit_box_range)):
+                    self.entity_list[entity_id][1][1]=old_pos[1]
+
     def move_down(self,entity_id):
+        old_pos = deepcopy(self.entity_list[entity_id][1])
         self.entity_list[entity_id][1][1] = min(self.entity_list[entity_id][1][1] + self.entity_list[entity_id][0].max_move_speed,self.field_y)
+        entity = self.entity_list[entity_id]
+        for enemy in self.entity_list:
+            if enemy != entity:
+                print(calc_dist(entity[1],enemy[1]))
+                if (calc_dist(entity[1],enemy[1])<(entity[0].hit_box_range+enemy[0].hit_box_range)):
+                    self.entity_list[entity_id][1][1]=old_pos[1]
     def move_left(self,entity_id):
+        old_pos = deepcopy(self.entity_list[entity_id][1])
         self.entity_list[entity_id][1][0] = max(self.entity_list[entity_id][1][0] - self.entity_list[entity_id][0].max_move_speed,0)
+        entity = self.entity_list[entity_id]
+        for enemy in self.entity_list:
+            if enemy != entity:
+                print(calc_dist(entity[1],enemy[1]))
+                if (calc_dist(entity[1],enemy[1])<(entity[0].hit_box_range+enemy[0].hit_box_range)):
+                    self.entity_list[entity_id][1][0]=old_pos[0]
     def move_right(self,entity_id):
+        old_pos = deepcopy(self.entity_list[entity_id][1])
         self.entity_list[entity_id][1][0] = min(self.entity_list[entity_id][1][0] + self.entity_list[entity_id][0].max_move_speed,self.field_x)
+        entity = self.entity_list[entity_id]
+        for enemy in self.entity_list:
+            if enemy != entity:
+                print(calc_dist(entity[1],enemy[1]))
+                if (calc_dist(entity[1],enemy[1])<(entity[0].hit_box_range+enemy[0].hit_box_range)):
+                    self.entity_list[entity_id][1][0]=old_pos[0]
 
 
     def atack(self,entity_id):
