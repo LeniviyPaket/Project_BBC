@@ -152,9 +152,13 @@ def char_random_dodge(whom, x):
             char_move_right(dodge_dist, whom)
 
 killed = []
+score = 0
+txt = canvas.create_text((height_f - 1) * cellsize, cellsize // 2, text = "Score: " + str(score), font = "Verdana 24", justify = tkinter.CENTER, fill = "red")
+
 #атака
 def char_attack(whom):
     global killed
+    global score, txt
     old_pos = (main_field.get_list_ent()[entity_id_to_id[whom]][1][0] + cellsize * 3 // 2, main_field.get_list_ent()[entity_id_to_id[whom]][1][1] + cellsize * 3 // 2)
     r = main_field.get_list_ent()[0][0].atack_range
     atck_gui = canvas.create_image(old_pos[0], old_pos[1], image=Attacksprite)
@@ -177,6 +181,9 @@ def char_attack(whom):
                 messagebox.showinfo('', 'You died')
                 root.withdraw()
                 exit()
+            score += 1
+            canvas.delete(txt)
+            txt = canvas.create_text((height_f - 1) * cellsize, cellsize // 2, text = "Score: " + str(score), font = "Verdana 24", justify = tkinter.CENTER, fill = "red")
 
 
 
