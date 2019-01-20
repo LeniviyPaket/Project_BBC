@@ -64,9 +64,9 @@ charbody = canvas.create_image(Jacket.x, Jacket.y, image=Jacketsprite)
 #warning: из-за того, что я ниоч понимаю принцип работы ткинтера, все будет костыльно
 
 def charmoveup():
-    canvas.delete(charbody)
+    global charbody
     Jacket.moveup()
-    charbody = canvas.create_image(Jacket.x, Jacket.y, image=Jacketsprite)
+    canvas.move(charbody, -1 * Jacket.speed, 0)
     canvas.update()
 
 canvas.bind("<Up>", charmoveup)
