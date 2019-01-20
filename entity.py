@@ -112,16 +112,19 @@ class Main_field(object):
     def atack(self,entity_id):
         entity = self.entity_list[entity_id]
         to_remove = []
+        kicked = []
         for enemy in self.entity_list:
             if enemy != entity:
                 if (calc_dist(entity[1],enemy[1])<(entity[0].atack_range+enemy[0].hit_box_range)):
+                    kicked.append(enemy)
                     if enemy[0].hited(entity[0].damage):
                         to_remove.append(enemy)
         for i in to_remove:
             self.entity_list.remove(i)
         a = [i[0].enemy_id for i in to_remove]
+        b = [i[0].enemy_id for i in kicked]
         #print(a)
-        return a
+        return a, b
 
 
 def calc_dist(pos_1,pos_2):
