@@ -26,7 +26,8 @@ class Player_c():
             return True
         return False
 class Enemy():
-    def __init__(self,weapon=1,max_helth=10,max_move_speed=32,atack_range=64,hit_box_range=5):
+    def __init__(self,weapon=1,max_helth=10,max_move_speed=32,atack_range=64,hit_box_range=5,enemy_id = None):
+        self.enemy_id = enemy_id
         self.weapon = weapon
         self.curent_helth = max_helth
         self.max_move_speed = max_move_speed
