@@ -13,28 +13,36 @@ class entity(object):
         return False
 
 
-
+class Weapon():
+    def __init__(self,damage=1,atack_range=65):
+        self.damage=damage
+        self.atack_range = atack_range
 
 class Player_c():
-    def __init__(self,weapon=1,max_helth=10,max_move_speed=32,atack_range=65,hit_box_range=32,enemy_id=None):
+    def __init__(self,weapon=Weapon(),max_helth=10,max_move_speed=32,hit_box_range=32,enemy_id=None):
         self.enemy_id = enemy_id
-        self.weapon = weapon
+        self.damage = weapon.damage
         self.curent_helth = max_helth
         self.max_move_speed = max_move_speed
         self.hit_box_range = hit_box_range
-        self.atack_range = atack_range
+        self.atack_range = weapon.atack_range
     def hited(self,damage=0):
         self.curent_helth -=damage
         if self.curent_helth <= 0:
             return True
         return False
+    def update_weapon(self,weapon):
+        self.damage = weapon.damage
+        self.atack_range = weapon.atack_range
+
 class Enemy():
-    def __init__(self,weapon=1,max_helth=10,max_move_speed=32,atack_range=65,hit_box_range=32, enemy_id = None):
+    def __init__(self,weapon=Weapon(),max_helth=10,max_move_speed=32,hit_box_range=32, enemy_id = None):
         self.enemy_id = enemy_id
-        self.weapon = weapon
+        self.damage = weapon.damage
         self.curent_helth = max_helth
         self.max_move_speed = max_move_speed
         self.hit_box_range = hit_box_range
+        self.atack_range = weapon.atack_range
     def hited(self,damage=0):
         self.curent_helth -=damage
         if self.curent_helth <= 0:
@@ -107,7 +115,7 @@ class Main_field(object):
         for enemy in self.entity_list:
             if enemy != entity:
                 if (calc_dist(entity[1],enemy[1])<(entity[0].atack_range+enemy[0].hit_box_range)):
-                    if enemy[0].hited(entity[0].weapon):
+                    if enemy[0].hited(entity[0].damage):
                         to_remove.append(enemy)
         for i in to_remove:
             self.entity_list.remove(i)
