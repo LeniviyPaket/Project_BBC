@@ -33,7 +33,6 @@ with open("polygon.txt", "r") as f:
 #а тут задаем параметры ГГ (кодовое имя --- Курточка)
 Jacket = Player.player()
 Jacket.x, Jacket.y = height_f * cellsize // 2, width_f * cellsize // 2
-print(dir(Player_c))
 Jacket.speed = main_field.get_list_ent()[0][0].max_move_speed
 Jacket.sprite = os.getcwd() + '/sprites/enemy_0_1.png'
 
