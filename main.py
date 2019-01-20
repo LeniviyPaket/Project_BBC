@@ -174,6 +174,10 @@ def char_attack(whom):
             canvas.delete(entities_to_obj[dead])
             killed.append(dead)
             print(len(killed))
+            if 'player' in died_list:
+                messagebox.showinfo('', 'You died')
+                root.withdraw()
+                exit()
 
 
 
