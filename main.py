@@ -18,10 +18,9 @@ from entity import *
 #подключаем музычку, но позже
 
 main_field = Main_field()
-count_of_moves = 0
-dead = []
 
 #создаем "список живых существ"
+entities_alive = {}
 
 height_f, width_f, cellsize = [16, 12, 64]
 dodge_dist = cellsize
@@ -42,11 +41,21 @@ entities_to_obj = {}
 
 #а тут задаем параметры ГГ (кодовое имя --- Курточка)
 main_field.add_entity('player',entity_id='player',entity_pos = [cellsize*4,cellsize*4])
+entities_alive['player'] = "player"
 entity_id_to_id['player'] = 0
 Jacket = Player.player()
 Jacket.x, Jacket.y = main_field.get_list_ent()[0][1][0] + cellsize * 3 // 2, main_field.get_list_ent()[0][1][1] + cellsize * 3 // 2
 Jacket.speed = main_field.get_list_ent()[0][0].max_move_speed
 Jacket.sprite = os.getcwd() + '/sprites/player.png'
+
+#задаем манекен
+main_field.add_entity('enemy',entity_id='enemy_1')
+entities_alive['enemy_1'] = "enemy_1"
+entity_id_to_id['enemy_1'] = 1
+Man = Player.player()
+Man.x, Man.y = main_field.get_list_ent()[1][1][0] + cellsize * 3 // 2, main_field.get_list_ent()[1][1][1] + cellsize * 3 // 2
+Man.speed = main_field.get_list_ent()[0][0].max_move_speed
+Man.sprite = os.getcwd() + '/sprites/enemy_very_pink.png'
 
 #пилим окно
 root = tkinter.Tk()
@@ -54,7 +63,7 @@ canvas = tkinter.Canvas(root, width = cellsize * height_f, height = cellsize * w
 
 #создаем спрайты
 Jacketsprite = ImageTk.PhotoImage(Image.open(Jacket.sprite))
-Mansprite = ImageTk.PhotoImage(Image.open(os.getcwd() + '/sprites/enemy_very_pink.png'))
+Mansprite = ImageTk.PhotoImage(Image.open(Man.sprite))
 Attacksprite = ImageTk.PhotoImage(Image.open(os.getcwd() + '/sprites/atack.png'))
 imgwall = ImageTk.PhotoImage(Image.open(os.getcwd() + '/sprites/wall1.png'))
 imgfloor = ImageTk.PhotoImage(Image.open(os.getcwd() + '/sprites/floor3.png'))
@@ -72,19 +81,8 @@ for j in range(height_f):
 #создаем тело персонажа
 entities_to_obj['player'] = canvas.create_image(Jacket.x, Jacket.y, image=Jacketsprite)
 
-def create_enemy(pos = [1024//2,768//2]):
-    global entity_id_to_id
-    global entities_to_obj
-    global canvas
-    global Mansprite
-    enemy_name = 'enemy_'+str(len(main_field.get_list_ent()))
-    main_field.add_entity('enemy',entity_id=enemy_name,entity_pos=pos)
-    entity_id_to_id[enemy_name] = 1
-    Man = Player.player()
-    Man.x, Man.y = main_field.get_list_ent()[len(main_field.get_list_ent())-1][1][0] + cellsize * 3 // 2, main_field.get_list_ent()[len(main_field.get_list_ent())-1][1][1] + cellsize * 3 // 2
-    Man.speed = main_field.get_list_ent()[0][0].max_move_speed
-    entities_to_obj[enemy_name] = canvas.create_image(Man.x, Man.y, image=Mansprite)
-create_enemy()
+#создаем манекен
+entities_to_obj['enemy_1'] = canvas.create_image(Man.x, Man.y, image=Mansprite)
 
 
 ##здесь скоро будут бинды
@@ -151,23 +149,14 @@ def char_random_dodge(whom, x):
         elif act == 3:
             char_move_right(dodge_dist, whom)
 
-killed = []
-score = 0
-txt = canvas.create_text((height_f - 1) * cellsize, cellsize // 2, text = "Score: " + str(score), font = "Verdana 24", justify = tkinter.CENTER, fill = "red")
 
 #атака
-def char_attack(whom):
-    global killed
-    global score, txt
-    old_pos = (main_field.get_list_ent()[entity_id_to_id[whom]][1][0] + cellsize * 3 // 2, main_field.get_list_ent()[entity_id_to_id[whom]][1][1] + cellsize * 3 // 2)
+def char_attack():
+    old_pos = (main_field.get_list_ent()[0][1][0] + cellsize * 3 // 2, main_field.get_list_ent()[0][1][1] + cellsize * 3 // 2)
     r = main_field.get_list_ent()[0][0].atack_range
     atck_gui = canvas.create_image(old_pos[0], old_pos[1], image=Attacksprite)
-    if whom == 'player':
-        sprite = Jacketsprite
-    else:
-        sprite = Mansprite
-    char_copy = canvas.create_image(old_pos[0], old_pos[1], image=sprite)
-    died_list = main_field.atack(entity_id_to_id[whom])
+    char_copy = canvas.create_image(old_pos[0], old_pos[1], image=Jacketsprite)
+    died_list, kicked_list = main_field.atack(0)
     canvas.update()
     #print(died_list)
     time.sleep(0.125)
@@ -176,131 +165,30 @@ def char_attack(whom):
     if died_list is not None:
         for dead in died_list:
             canvas.delete(entities_to_obj[dead])
-            killed.append(dead)
-            if 'player' in died_list:
-                messagebox.showinfo('', 'You died')
-                root.withdraw()
-                exit()
-            score += 1
-            canvas.delete(txt)
-            txt = canvas.create_text((height_f - 1) * cellsize, cellsize // 2, text = "Score: " + str(score), font = "Verdana 24", justify = tkinter.CENTER, fill = "red")
+    for ent in kicked_list:
+        char_random_dodge(ent, 2)
+    canvas.update()
 
 
 
 #тут отзываемся на нажатия клавиш
 def callback(event):
-    global count_of_moves
-    global killed
-    dead = killed
     if event.char == "w":
         char_move_up(Jacket.speed, 'player')
         time.sleep(0.0625)
-        list_of_ent = main_field.get_list_ent()
-        for key in entity_id_to_id.keys():
-            if entity_id_to_id[key] != 0 and (key not in dead):
-                result = list_of_ent[entity_id_to_id[key]][0].move_to_player(list_of_ent[0][1],list_of_ent[0][0].hit_box_range,list_of_ent[entity_id_to_id[key]][1])
-                if result == 'up':
-                    char_move_up(None,key)
-                if result == 'down':
-                    char_move_down(None,key)
-                if result == 'left':
-                    char_move_left(None,key)
-                if result == 'right':
-                    char_move_right(None,key)
-                if result == 'atack':
-                    char_attack(key)                
-
     if event.char == "a":
         char_move_left(Jacket.speed, 'player')
         time.sleep(0.0625)
-        list_of_ent = main_field.get_list_ent()
-        for key in entity_id_to_id.keys():
-            if entity_id_to_id[key] != 0 and (key not in dead):
-                result = list_of_ent[entity_id_to_id[key]][0].move_to_player(list_of_ent[0][1],list_of_ent[0][0].hit_box_range,list_of_ent[entity_id_to_id[key]][1])
-                if result == 'up':
-                    char_move_up(None,key)
-                if result == 'down':
-                    char_move_down(None,key)
-                if result == 'left':
-                    char_move_left(None,key)
-                if result == 'right':
-                    char_move_right(None,key)
-                if result == 'atack':
-                    char_attack(key)
     if event.char == "s":
         char_move_down(Jacket.speed, 'player')
         time.sleep(0.0625)
-        list_of_ent = main_field.get_list_ent()
-        for key in entity_id_to_id.keys():
-            if entity_id_to_id[key] != 0 and (key not in dead):
-                result = list_of_ent[entity_id_to_id[key]][0].move_to_player(list_of_ent[0][1],list_of_ent[0][0].hit_box_range,list_of_ent[entity_id_to_id[key]][1])
-                if result == 'up':
-                    char_move_up(None,key)
-                if result == 'down':
-                    char_move_down(None,key)
-                if result == 'left':
-                    char_move_left(None,key)
-                if result == 'right':
-                    char_move_right(None,key)
-                if result == 'atack':
-                    char_attack(key)
     if event.char == "d":
         char_move_right(Jacket.speed, 'player')
         time.sleep(0.0625)
-        list_of_ent = main_field.get_list_ent()
-        for key in entity_id_to_id.keys():
-            if entity_id_to_id[key] != 0 and (key not in dead):
-                result = list_of_ent[entity_id_to_id[key]][0].move_to_player(list_of_ent[0][1],list_of_ent[0][0].hit_box_range,list_of_ent[entity_id_to_id[key]][1])
-                if result == 'up':
-                    char_move_up(None,key)
-                if result == 'down':
-                    char_move_down(None,key)
-                if result == 'left':
-                    char_move_left(None,key)
-                if result == 'right':
-                    char_move_right(None,key)
-                if result == 'atack':
-                    char_attack(key)
     if event.char == "f":
         char_random_dodge('player', 2)
-        list_of_ent = main_field.get_list_ent()
-        for key in entity_id_to_id.keys():
-            if entity_id_to_id[key] != 0 and (key not in dead):
-                result = list_of_ent[entity_id_to_id[key]][0].move_to_player(list_of_ent[0][1],list_of_ent[0][0].hit_box_range,list_of_ent[entity_id_to_id[key]][1])
-                if result == 'up':
-                    char_move_up(None,key)
-                if result == 'down':
-                    char_move_down(None,key)
-                if result == 'left':
-                    char_move_left(None,key)
-                if result == 'right':
-                    char_move_right(None,key)
-                if result == 'atack':
-                    char_attack(key)
     if event.char == " ":
-        char_attack('player')
-        list_of_ent = main_field.get_list_ent()
-        for key in entity_id_to_id.keys():
-            if entity_id_to_id[key] != 0 and (key not in dead):
-                result = list_of_ent[entity_id_to_id[key]][0].move_to_player(list_of_ent[0][1],list_of_ent[0][0].hit_box_range,list_of_ent[entity_id_to_id[key]][1])
-                if result == 'up':
-                    char_move_up(None,key)
-                if result == 'down':
-                    char_move_down(None,key)
-                if result == 'left':
-                    char_move_left(None,key)
-                if result == 'right':
-                    char_move_right(None,key)
-                if result == 'atack':
-                    char_attack(key)
-    name = [' ','f','w','s','a','d']
-    if event.char in name:
-        if count_of_moves//10 < (count_of_moves+1)//10:
-            create_enemy()
-            count_of_moves+=1
-        else:
-            count_of_moves+=1
-
+        char_attack()
 
 
 root.bind("<Key>", callback)
