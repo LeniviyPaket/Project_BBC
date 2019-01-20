@@ -72,7 +72,6 @@ class Main_field(object):
         entity = self.entity_list[entity_id]
         for enemy in self.entity_list:
             if enemy != entity:
-                print(calc_dist(entity[1],enemy[1]))
                 if (calc_dist(entity[1],enemy[1])<(entity[0].hit_box_range+enemy[0].hit_box_range)):
                     self.entity_list[entity_id][1][1]=old_pos[1]
 
@@ -82,7 +81,6 @@ class Main_field(object):
         entity = self.entity_list[entity_id]
         for enemy in self.entity_list:
             if enemy != entity:
-                print(calc_dist(entity[1],enemy[1]))
                 if (calc_dist(entity[1],enemy[1])<(entity[0].hit_box_range+enemy[0].hit_box_range)):
                     self.entity_list[entity_id][1][1]=old_pos[1]
     def move_left(self,entity_id):
@@ -91,7 +89,6 @@ class Main_field(object):
         entity = self.entity_list[entity_id]
         for enemy in self.entity_list:
             if enemy != entity:
-                print(calc_dist(entity[1],enemy[1]))
                 if (calc_dist(entity[1],enemy[1])<(entity[0].hit_box_range+enemy[0].hit_box_range)):
                     self.entity_list[entity_id][1][0]=old_pos[0]
     def move_right(self,entity_id):
@@ -100,7 +97,6 @@ class Main_field(object):
         entity = self.entity_list[entity_id]
         for enemy in self.entity_list:
             if enemy != entity:
-                print(calc_dist(entity[1],enemy[1]))
                 if (calc_dist(entity[1],enemy[1])<(entity[0].hit_box_range+enemy[0].hit_box_range)):
                     self.entity_list[entity_id][1][0]=old_pos[0]
 
