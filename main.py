@@ -5,6 +5,7 @@ from PIL import Image
 from tkinter import messagebox
 from random import *
 from copy import deepcopy
+import time
 
 
 #importing some mechanics
@@ -13,6 +14,8 @@ import Enemy
 import Tile
 import Weapon
 from entity import *
+
+#подключаем музычку, но позже
 
 main_field = Main_field()
 
@@ -40,7 +43,7 @@ entities_alive['player'] = "player"
 Jacket = Player.player()
 Jacket.x, Jacket.y = main_field.get_list_ent()[0][1][0] + cellsize, main_field.get_list_ent()[0][1][1] + cellsize
 Jacket.speed = main_field.get_list_ent()[0][0].max_move_speed
-Jacket.sprite = os.getcwd() + '/sprites/enemy_0_1.png'
+Jacket.sprite = os.getcwd() + '/sprites/player.png'
 
 #задаем манекен
 main_field.add_entity('enemy',entity_id='enemy_1')
@@ -57,6 +60,7 @@ canvas = tkinter.Canvas(root, width = cellsize * height_f, height = cellsize * w
 #создаем спрайты
 Jacketsprite = ImageTk.PhotoImage(Image.open(Jacket.sprite))
 Mansprite = ImageTk.PhotoImage(Image.open(Man.sprite))
+Attacksprite = ImageTk.PhotoImage(Image.open(os.getcwd() + '/sprites/atack.png'))
 imgwall = ImageTk.PhotoImage(Image.open(os.getcwd() + '/sprites/wall1.png'))
 imgfloor = ImageTk.PhotoImage(Image.open(os.getcwd() + '/sprites/floor3.png'))
 
@@ -142,12 +146,22 @@ def char_random_dodge():
             char_move_right(dodge_dist)
 
 
+#атака
 def char_attack():
+    old_pos = (main_field.get_list_ent()[0][1][0] + cellsize, main_field.get_list_ent()[0][1][1] + cellsize)
+    r = main_field.get_list_ent()[0][0].atack_range
+    atck_gui = canvas.create_image(old_pos[0], old_pos[1], image=Attacksprite)
+    char_copy = canvas.create_image(old_pos[0], old_pos[1], image=Jacketsprite)
     died_list = main_field.atack(0)
+    canvas.update()
     #print(died_list)
+    time.sleep(0.125)
+    canvas.delete(atck_gui)
+    canvas.delete(char_copy)
     if died_list is not None:
         for dead in died_list:
             canvas.delete(entities_to_obj[dead])
+    canvas.update()
 
 
 
@@ -155,16 +169,21 @@ def char_attack():
 def callback(event):
     if event.char == "w":
         char_move_up(Jacket.speed)
+        time.sleep(0.0625)
     if event.char == "a":
         char_move_left(Jacket.speed)
+        time.sleep(0.0625)
     if event.char == "s":
         char_move_down(Jacket.speed)
+        time.sleep(0.0625)
     if event.char == "d":
         char_move_right(Jacket.speed)
+        time.sleep(0.0625)
     if event.char == "f":
         char_random_dodge()
     if event.char == " ":
         char_attack()
+
 
 root.bind("<Key>", callback)
 
