@@ -55,7 +55,7 @@ entity_id_to_id['enemy_1'] = 1
 Man = Player.player()
 Man.x, Man.y = main_field.get_list_ent()[1][1][0] + cellsize * 3 // 2, main_field.get_list_ent()[1][1][1] + cellsize * 3 // 2
 Man.speed = main_field.get_list_ent()[0][0].max_move_speed
-Man.sprite = os.getcwd() + '/sprites/enemy_pink.png'
+Man.sprite = os.getcwd() + '/sprites/enemy_very_pink.png'
 
 #пилим окно
 root = tkinter.Tk()
