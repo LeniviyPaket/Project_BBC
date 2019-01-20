@@ -40,7 +40,7 @@ Jacket.sprite = os.getcwd() + '/sprites/enemy_0_1.png'
 
 #задаем манекен
 Man = Player.player()
-Man.x, Man.y = height_f * cellsize // 2 + 4 * cellsize, width_f * cellsize // 2 + 4 * cellsize
+Man.x, Man.y = main_field.get_list_ent()[1][1][0] + cellsize, main_field.get_list_ent()[1][1][1] + cellsize
 Man.speed = main_field.get_list_ent()[0][0].max_move_speed
 Man.sprite = os.getcwd() + '/sprites/weapon.png'
 
@@ -136,7 +136,7 @@ def char_random_dodge():
 
 
 def char_attack():
-    pass
+    main_field.atack(0)
 
 
 #тут отзываемся на нажатия клавиш

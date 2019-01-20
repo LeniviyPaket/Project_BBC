@@ -19,6 +19,7 @@ class Player_c():
         self.curent_helth = max_helth
         self.max_move_speed = max_move_speed
         self.hit_box_range = hit_box_range
+        self.atack_range = atack_range
     def hited(self,damage=0):
         self.curent_helth -=damage
         if self.curent_helth <= 0:
@@ -32,6 +33,7 @@ class Enemy():
         self.hit_box_range = hit_box_range
     def hited(self,damage=0):
         self.curent_helth -=damage
+        print(self.curent_helth)
         if self.curent_helth <= 0:
             return True
         return False
@@ -75,12 +77,14 @@ class Main_field(object):
         entity = self.entity_list[entity_id]
         to_remove = []
         for enemy in self.entity_list:
-            if num != entity_id:
+            if enemy != entity:
+                print(calc_dist(enemy[1],entity[1]))
                 if (calc_dist(entity[1],enemy[1])<(entity[0].atack_range+enemy[0].hit_box_range)):
                     if enemy[0].hited(entity[0].weapon):
                         to_remove.append(enemy)
         for i in to_remove:
             self.entity_list.remove(i)
 
+
 def calc_dist(pos_1,pos_2):
-    return ((pos_1[0]-pos_2[1])**2 + (pos_1[1]-pos_2[1])**2)**0.5
+    return ((pos_1[0]-pos_2[0])**2 + (pos_1[1]-pos_2[1])**2)**0.5
