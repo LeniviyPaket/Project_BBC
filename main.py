@@ -12,6 +12,7 @@ import Tile
 import Weapon
 
 height_f, width_f, cellsize = [16, 12, 64]
+dodgedist = cellsize
 
 #height_f, width_f, cellsize = [3, 3, 64]
 
@@ -63,28 +64,28 @@ charbody = canvas.create_image(Jacket.x, Jacket.y, image=Jacketsprite)
 #а вот и бинды
 #warning: из-за того, что я ниоч понимаю принцип работы ткинтера, все будет костыльно
 
-def char_move_left():
+def char_move_left(x):
     global charbody
     #Jacket.move_up()
-    canvas.move(charbody, -1 * Jacket.speed, 0)
+    canvas.move(charbody, -1 * x, 0)
     canvas.update()
 
-def char_move_down():
+def char_move_down(x):
     global charbody
     #Jacket.move_up()
-    canvas.move(charbody, 0, Jacket.speed)
+    canvas.move(charbody, 0, x)
     canvas.update()
 
-def char_move_right():
+def char_move_right(x):
     global charbody
     #Jacket.move_up()
-    canvas.move(charbody, Jacket.speed, 0)
+    canvas.move(charbody, x, 0)
     canvas.update()
 
-def char_move_up():
+def char_move_up(x):
     global charbody
     #Jacket.move_up()
-    canvas.move(charbody, 0, -1 * Jacket.speed)
+    canvas.move(charbody, 0, -1 * x)
     canvas.update()
 
 
@@ -93,26 +94,33 @@ def char_random_dodge():
     for _ in range(2):
         act = randint(0, 3)
         if act == 0:
-            char_move_up()
+            char_move_up(dodge_dist)
         elif act == 1:
-            char_move_down()
+            char_move_down(dodge_dist)
         elif act == 2:
-            char_move_left()
+            char_move_left(dodge_dist)
         elif act == 3:
-            char_move_right()
+            char_move_right(dodge_dist)
+
+
+def char_attack():
+    pass
+
 
 #тут отзываемся на нажатия клавиш
 def callback(event):
     if event.char == "w":
-        char_move_up()
+        char_move_up(Jacket.speed)
     if event.char == "a":
-        char_move_left()
+        char_move_left(Jacket.speed)
     if event.char == "s":
-        char_move_down()
+        char_move_down(Jacket.speed)
     if event.char == "d":
-        char_move_right()
+        char_move_right(Jacket.speed)
     if event.char == "f":
         char_random_dodge()
+    if event.char == " ":
+        char_attack()
 
 root.bind("<Key>", callback)
 
