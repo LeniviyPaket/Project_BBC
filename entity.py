@@ -24,10 +24,17 @@ class Player_c():
         if self.curent_helth <= 0:
             return True
         return False
-class Enemy(entity):
-    def __init__(self):
-        super().__init__()
-
+class Enemy():
+    def __init__(self,weapon=1,max_helth=10,max_move_speed=32,atack_range=64,hit_box_range=5):
+        self.weapon = weapon
+        self.curent_helth = max_helth
+        self.max_move_speed = max_move_speed
+        self.hit_box_range = hit_box_range
+    def hited(self,damage=0):
+        self.curent_helth -=damage
+        if self.curent_helth <= 0:
+            return True
+        return False
 
 entity_dict = {
     'enemy'  : Enemy,

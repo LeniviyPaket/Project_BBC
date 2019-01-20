@@ -16,6 +16,7 @@ from entity import *
 
 main_field = Main_field()
 main_field.add_entity('player')
+main_field.add_entity('enemy')
 main_field.get_list_ent()
 
 height_f, width_f, cellsize = [16, 12, 64]
@@ -37,6 +38,11 @@ Jacket.x, Jacket.y = height_f * cellsize // 2, width_f * cellsize // 2
 Jacket.speed = main_field.get_list_ent()[0][0].max_move_speed
 Jacket.sprite = os.getcwd() + '/sprites/enemy_0_1.png'
 
+#задаем манекен
+Man = Player.player()
+Man.x, Man.y = height_f * cellsize // 2 + 4 * cellsize, width_f * cellsize // 2 + 4 * cellsize
+Man.speed = main_field.get_list_ent()[0][0].max_move_speed
+Man.sprite = os.getcwd() + '/sprites/weapon.png'
 
 #пилим окно
 root = tkinter.Tk()
@@ -44,6 +50,7 @@ canvas = tkinter.Canvas(root, width = cellsize * height_f, height = cellsize * w
 
 #создаем спрайты
 Jacketsprite = ImageTk.PhotoImage(Image.open(Jacket.sprite))
+Mansprite = ImageTk.PhotoImage(Image.open(Man.sprite))
 imgwall = ImageTk.PhotoImage(Image.open(os.getcwd() + '/sprites/wall1.png'))
 imgfloor = ImageTk.PhotoImage(Image.open(os.getcwd() + '/sprites/floor3.png'))
 
@@ -58,6 +65,9 @@ for j in range(height_f):
 
 #создаем тело персонажа
 charbody = canvas.create_image(Jacket.x, Jacket.y, image=Jacketsprite)
+
+#создаем манекен
+manbody = canvas.create_image(Man.x, Man.y, image=Mansprite)
 
 
 ##здесь скоро будут бинды
