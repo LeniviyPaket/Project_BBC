@@ -4,6 +4,7 @@ from PIL import ImageTk
 from PIL import Image
 from tkinter import messagebox
 from random import *
+from copy import deepcopy
 
 
 #importing some mechanics
@@ -72,32 +73,42 @@ charbody = canvas.create_image(Jacket.x, Jacket.y, image=Jacketsprite)
 #а вот и бинды
 #warning: из-за того, что я ниоч понимаю принцип работы ткинтера, все будет костыльно
 
+
 def char_move_left(x):
     global charbody
+    old_pos = deepcopy(main_field.get_list_ent()[0][1])
     main_field.move_left(0)
+    new_pos = main_field.get_list_ent()[0][1]
     #Jacket.move_up()
-    canvas.move(charbody, -1 * x, 0)
+    canvas.move(charbody, new_pos[0]-old_pos[0], new_pos[1]-old_pos[1])
     canvas.update()
 
 def char_move_down(x):
     global charbody
+    old_pos = deepcopy(main_field.get_list_ent()[0][1])
     main_field.move_down(0)
+    new_pos = main_field.get_list_ent()[0][1]
     #Jacket.move_up()
-    canvas.move(charbody, 0, x)
+    canvas.move(charbody, new_pos[0]-old_pos[0], new_pos[1]-old_pos[1])
     canvas.update()
 
 def char_move_right(x):
     global charbody
+    old_pos = deepcopy(main_field.get_list_ent()[0][1])
     main_field.move_right(0)
+    new_pos = main_field.get_list_ent()[0][1]
     #Jacket.move_up()
-    canvas.move(charbody, x, 0)
+    print(old_pos,new_pos)
+    canvas.move(charbody, new_pos[0]-old_pos[0], new_pos[1]-old_pos[1])
     canvas.update()
 
 def char_move_up(x):
     global charbody
+    old_pos = deepcopy(main_field.get_list_ent()[0][1])
     main_field.move_up(0)
+    new_pos = main_field.get_list_ent()[0][1]
     #Jacket.move_up()
-    canvas.move(charbody, 0, -1 * x)
+    canvas.move(charbody, new_pos[0]-old_pos[0], new_pos[1]-old_pos[1])
     canvas.update()
 
 

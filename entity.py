@@ -38,6 +38,7 @@ class Main_field(object):
     def __init__(self,field_size=(1024-128,768-128)):
         self.field_x = field_size[0]
         self.field_y = field_size[1]
+        print(self.field_x,self.field_y)
         self.entity_list = []
 
 
@@ -55,13 +56,13 @@ class Main_field(object):
 
 	#передвинуть entity на шаг в соответсвующем направлении
     def move_up(self,entity_id):
-        self.entity_list[entity_id][1][1] -= max(self.entity_list[entity_id][0].max_move_speed,0)
+        self.entity_list[entity_id][1][1] = max(self.entity_list[entity_id][1][1] - self.entity_list[entity_id][0].max_move_speed,0)
     def move_down(self,entity_id):
-        self.entity_list[entity_id][1][1] += min(self.entity_list[entity_id][0].max_move_speed,self.field_x)
+        self.entity_list[entity_id][1][1] = min(self.entity_list[entity_id][1][1] + self.entity_list[entity_id][0].max_move_speed,self.field_x)
     def move_left(self,entity_id):
-        self.entity_list[entity_id][1][0] -= max(self.entity_list[entity_id][0].max_move_speed,0)
+        self.entity_list[entity_id][1][0] = max(self.entity_list[entity_id][1][0] - self.entity_list[entity_id][0].max_move_speed,0)
     def move_right(self,entity_id):
-        self.entity_list[entity_id][1][0] += max(self.entity_list[entity_id][0].max_move_speed,self.field_y)
+        self.entity_list[entity_id][1][0] = min(self.entity_list[entity_id][1][0] + self.entity_list[entity_id][0].max_move_speed,self.field_y)
 
 
     def atack_up(self,entity_id):
