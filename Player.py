@@ -5,6 +5,7 @@ class player():
     x = None
     y = None
     ang = None
+    sprite = None
     
     #stats
     hpmax = None
