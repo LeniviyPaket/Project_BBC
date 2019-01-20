@@ -84,6 +84,9 @@ class Main_field(object):
                         to_remove.append(enemy)
         for i in to_remove:
             self.entity_list.remove(i)
+        a = [i[0].enemy_id for i in to_remove]
+        #print(a)
+        return a
 
 
 def calc_dist(pos_1,pos_2):

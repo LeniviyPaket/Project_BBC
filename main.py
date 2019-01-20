@@ -71,12 +71,10 @@ for j in range(height_f):
 
 
 #создаем тело персонажа
-charbody = canvas.create_image(Jacket.x, Jacket.y, image=Jacketsprite)
-entities_to_obj['player'] = charbody
+entities_to_obj['player'] = canvas.create_image(Jacket.x, Jacket.y, image=Jacketsprite)
 
 #создаем манекен
-manbody = canvas.create_image(Man.x, Man.y, image=Mansprite)
-entities_to_obj['enemy_1'] = manbody
+entities_to_obj['enemy_1'] = canvas.create_image(Man.x, Man.y, image=Mansprite)
 
 
 ##здесь скоро будут бинды
@@ -94,39 +92,39 @@ entities_to_obj['enemy_1'] = manbody
 
 
 def char_move_left(x):
-    global charbody
+    global entities_to_obj
     old_pos = deepcopy(main_field.get_list_ent()[0][1])
     main_field.move_left(0)
     new_pos = main_field.get_list_ent()[0][1]
     #Jacket.move_up()
-    canvas.move(charbody, new_pos[0]-old_pos[0], new_pos[1]-old_pos[1])
+    canvas.move(entities_to_obj['player'], new_pos[0]-old_pos[0], new_pos[1]-old_pos[1])
     canvas.update()
 
 def char_move_down(x):
-    global charbody
+    global entities_to_obj
     old_pos = deepcopy(main_field.get_list_ent()[0][1])
     main_field.move_down(0)
     new_pos = main_field.get_list_ent()[0][1]
     #Jacket.move_up()
-    canvas.move(charbody, new_pos[0]-old_pos[0], new_pos[1]-old_pos[1])
+    canvas.move(entities_to_obj['player'], new_pos[0]-old_pos[0], new_pos[1]-old_pos[1])
     canvas.update()
 
 def char_move_right(x):
-    global charbody
+    global entities_to_obj
     old_pos = deepcopy(main_field.get_list_ent()[0][1])
     main_field.move_right(0)
     new_pos = main_field.get_list_ent()[0][1]
     #Jacket.move_up()
-    canvas.move(charbody, new_pos[0]-old_pos[0], new_pos[1]-old_pos[1])
+    canvas.move(entities_to_obj['player'], new_pos[0]-old_pos[0], new_pos[1]-old_pos[1])
     canvas.update()
 
 def char_move_up(x):
-    global charbody
+    global entities_to_obj
     old_pos = deepcopy(main_field.get_list_ent()[0][1])
     main_field.move_up(0)
     new_pos = main_field.get_list_ent()[0][1]
     #Jacket.move_up()
-    canvas.move(charbody, new_pos[0]-old_pos[0], new_pos[1]-old_pos[1])
+    canvas.move(entities_to_obj['player'], new_pos[0]-old_pos[0], new_pos[1]-old_pos[1])
     canvas.update()
 
 
@@ -145,7 +143,12 @@ def char_random_dodge():
 
 
 def char_attack():
-    main_field.atack(0)
+    died_list = main_field.atack(0)
+    #print(died_list)
+    if died_list is not None:
+        for dead in died_list:
+            canvas.delete(entities_to_obj[dead])
+
 
 
 #тут отзываемся на нажатия клавиш
