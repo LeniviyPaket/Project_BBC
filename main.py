@@ -35,7 +35,7 @@ canvas = tkinter.Canvas(root, width = cellsize * height_f, height = cellsize * w
 #создаем спрайты
 Jacketsprite = ImageTk.PhotoImage(Image.open(Jacket.sprite))
 imgwall = ImageTk.PhotoImage(Image.open(os.getcwd() + '/sprites/floor_3.png'))
-imgfloor = ImageTk.PhotoImage(Image.open(os.getcwd() + '/sprites/g_floor_base.png'))
+imgfloor = ImageTk.PhotoImage(Image.open(os.getcwd() + '/sprites/floor3.png'))
 
 
 #генерируем текстуры поля
@@ -63,16 +63,58 @@ charbody = canvas.create_image(Jacket.x, Jacket.y, image=Jacketsprite)
 #а вот и бинды
 #warning: из-за того, что я ниоч понимаю принцип работы ткинтера, все будет костыльно
 
-def charmoveup():
+def char_move_left():
     global charbody
-    Jacket.moveup()
+    #Jacket.move_up()
     canvas.move(charbody, -1 * Jacket.speed, 0)
     canvas.update()
 
-canvas.bind("<Up>", charmoveup)
-#canvas.bind("a", charmoveleft)
-#canvas.bind("s", charmovedown)
-#canvas.bind("d", charmoveright)
+def char_move_down():
+    global charbody
+    #Jacket.move_up()
+    canvas.move(charbody, 0, Jacket.speed)
+    canvas.update()
+
+def char_move_right():
+    global charbody
+    #Jacket.move_up()
+    canvas.move(charbody, Jacket.speed, 0)
+    canvas.update()
+
+def char_move_up():
+    global charbody
+    #Jacket.move_up()
+    canvas.move(charbody, 0, -1 * Jacket.speed)
+    canvas.update()
+
+
+#рандомный кувырок. все как вы любите --- сплошные костыли
+def char_random_dodge():
+    for _ in range(2):
+        act = randint(0, 3)
+        if act == 0:
+            char_move_up()
+        elif act == 1:
+            char_move_down()
+        elif act == 2:
+            char_move_left()
+        elif act == 3:
+            char_move_right()
+
+#тут отзываемся на нажатия клавиш
+def callback(event):
+    if event.char == "w":
+        char_move_up()
+    if event.char == "a":
+        char_move_left()
+    if event.char == "s":
+        char_move_down()
+    if event.char == "d":
+        char_move_right()
+    if event.char == "f":
+        char_random_dodge()
+
+root.bind("<Key>", callback)
 
 canvas.pack()
 root.mainloop()
